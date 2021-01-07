@@ -1,24 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { Sidebar, Action } from "./components";
+import { Home, Income, Expense, Chart } from "./pages";
+import {
+  Wrapper,
+  SidebarWrapper,
+  MainWrapper,
+  ActionWrapper,
+} from "./GlobalStyles";
+import "./index.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Wrapper>
+        <SidebarWrapper>
+          <Sidebar />
+        </SidebarWrapper>
+        <MainWrapper>
+          <Switch>
+            <Route path="/income" exact component={Income} />
+            <Route path="/expense" exact component={Expense} />
+            <Route path="/chart" exact component={Chart} />
+            <Route path="/" exact component={Home} />
+          </Switch>
+        </MainWrapper>
+        <ActionWrapper>
+          <Action />
+        </ActionWrapper>
+      </Wrapper>
+    </Router>
   );
 }
 
