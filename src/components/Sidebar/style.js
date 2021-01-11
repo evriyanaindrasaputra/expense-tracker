@@ -7,6 +7,7 @@ export const SidebarWrapper = styled.nav`
   display: flex;
   flex-direction: column;
   height: 100%;
+  /* position: fixed; */
 `;
 export const SidebarLogo = styled(Link)`
   font-size: 1.4rem;

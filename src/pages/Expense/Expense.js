@@ -3,6 +3,8 @@ import { HeadingMain } from "../../GlobalStyles";
 import { CardActivity } from "../../components";
 import styled from "styled-components";
 import { ExpenseContext } from "../../context/context";
+import { Doughnut } from "react-chartjs-2";
+import { expenseCategories } from "../../constans/categories";
 const HeadingIncome = styled(HeadingMain)`
   padding: 10px;
 `;
@@ -14,9 +16,22 @@ const CardWrapper = styled.section`
   align-items: center;
   padding: 15px 15px 0 15px;
 `;
+const ChartWrapper = styled.div`
+  width: 60%;
+  margin: 0 auto;
+`;
 const Expense = () => {
   const { expense } = useContext(ExpenseContext);
   const [acts, setActs] = useState(expense);
+  const chartData = {
+    datasets: [
+      {
+        data: acts.map((data) => data.amount),
+        backgroundColor: expenseCategories.map((c) => c.color),
+      },
+    ],
+    labels: acts.map((data) => data.describe),
+  };
   useEffect(() => {
     const updateAct = () => {
       setActs(expense);
@@ -26,6 +41,9 @@ const Expense = () => {
   return (
     <>
       <HeadingIncome>Expense</HeadingIncome>
+      <ChartWrapper>
+        <Doughnut data={chartData} />
+      </ChartWrapper>
       <CardWrapper>
         {expense.length === 0 ? (
           <div>No Data Expense yet</div>

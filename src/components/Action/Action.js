@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import { v4 as uuidv4 } from "uuid";
 import { useForm } from "react-hook-form";
 import { ExpenseContext } from "../../context/context";
+import { incomeCategories, expenseCategories } from "../../constans/categories";
 import {
   ActionWrapper,
   ActionIcon,
@@ -17,6 +18,7 @@ import {
 
 const Action = () => {
   const [isAddAct, setIsAddAct] = useState(false);
+  const [category, setCategory] = useState("");
   const { register, errors, handleSubmit } = useForm();
   const { addActivity } = useContext(ExpenseContext);
   const onSubmit = (data) => {
@@ -28,6 +30,8 @@ const Action = () => {
     });
     setIsAddAct(false);
   };
+  const selectedCategory =
+    category === "income" ? incomeCategories : expenseCategories;
   return (
     <>
       <ActionWrapper onClick={() => setIsAddAct(!isAddAct)}>
@@ -48,19 +52,30 @@ const Action = () => {
         }}
       >
         <Form onSubmit={handleSubmit(onSubmit)}>
+          <Label htmlFor="select">Select Category</Label>
+          <Select
+            name="type"
+            onChange={(e) => setCategory(e.target.value)}
+            ref={register({ required: true })}
+          >
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+          </Select>
           <Label htmlFor="describe">Activity</Label>
-          <Input
+          {/* <Input
             type="text"
             name="describe"
             placeholder="Enter your Activity ...."
             ref={register({ required: true })}
-          />
-          {errors.describe && "Activity is required"}
-          <Label htmlFor="select">Select Category</Label>
-          <Select name="type" ref={register({ required: true })}>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
+          /> */}
+          <Select name="describe" ref={register({ required: true })}>
+            {selectedCategory.map((data, index) => (
+              <option key={index} value={data.type}>
+                {data.type}
+              </option>
+            ))}
           </Select>
+          {errors.describe && "Activity is required"}
           <Label htmlFor="amount">Amount</Label>
           <Input
             type="number"
